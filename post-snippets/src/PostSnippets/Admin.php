@@ -17,6 +17,9 @@ class Admin {
      */
     protected $settings;
 
+    public $_admin_page = 'post-snippets';
+    public $_admin_upgrade_page = 'https://postsnippets.com/pricing/';
+
     // const   GROUP_CLASS = 'PostSnippets\Group';
 
     /**
@@ -54,13 +57,14 @@ class Admin {
 
         } );
 
+
 	}
 
 	public function load_block() {
 
         wp_register_script(
             'post-snippets-block',
-            PS_URL . 'dist/blocks.build.js',
+            PS_URL . 'src/blocks/blocks.build.js',
             array('wp-blocks','wp-editor','wp-element')
         );
 
@@ -175,6 +179,9 @@ class Admin {
 				$this,
 				'newsPage',
 			) );
+
+            add_submenu_page($this->_admin_page,__('👉 Get Pro Bundle', 'post-snippets'),sprintf('<span style="color:#adff2f!important;">👉 %1$s <b>%2$s</b>&nbsp;&nbsp;➤</span>', __('Get', 'post-snippets'), __('Pro Bundle', 'post-snippets')),$capability,$this->_admin_upgrade_page,'');
+
 			/*$optionPage = add_submenu_page(
 				__( 'Post Snippets', 'post-snippets'),
 				__( 'Post Snippets', 'post-snippets'),

@@ -11,9 +11,15 @@ class WPEditor
 
     public function __construct()
     {
-        // Add TinyMCE button
-        add_action('init', array(&$this, 'addTinymceButton'));
-
+        // TinyMCE button must not appear in description editor of ps code, css and js edit pages. 
+        $page = isset($_REQUEST['page']) ? sanitize_text_field( $_REQUEST['page'] ) :''; 
+        if (
+            'post-snippets-edit'!= $page && 
+            'post-snippets-edit-css'!= $page &&
+            'post-snippets-edit-js'!= $page) {  
+              // Add TinyMCE button   
+            add_action('init', array(&$this, 'addTinymceButton'));
+        }
         // Add Editor QuickTag button:
         add_action(
             'admin_print_footer_scripts',
@@ -208,7 +214,7 @@ class WPEditor
 				    // $snippet = str_replace( '"', '\"', $snippet );
                     // $snippet = htmlspecialchars( stripslashes( $snippet ) );
 				    /* Remove CR and replace LF with \n to keep formatting */
-				    $snippet = str_replace( chr( 13 ), '', str_replace( chr( 10 ), '<br>', $snippet ) );
+				    $snippet = str_replace( chr( 13 ), '', str_replace( chr( 10 ), '\n', $snippet ) );
 				    # Print out the variable containing the snippet
 				    array_push( $snippetStack, "var postsnippet_{$key} = \"" . $snippet . "\";\n" );
 			    }

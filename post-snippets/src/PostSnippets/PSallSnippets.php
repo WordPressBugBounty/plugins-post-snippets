@@ -239,11 +239,23 @@ if(class_exists('PostSnippets')){
                 case 'snippet_status':
                 case 'snippet_group':
                 case 'snippet_date':
-                    return $item[ $column_name ];
+                    $content = $this->col_content_short_length($item[$column_name]);
+                    return $content;
 
                 default:
                     return print_r( $item, true ) ;
             }
+        }
+
+         /**
+         * @param $col : column content
+         *
+         * @return content Short Content
+         */
+        public function col_content_short_length($col) {
+            $content = str_replace (array ("\r\n", "\r", "\n"), "[BR]", htmlspecialchars ($col));
+            $content = mb_strimwidth($content, 0, 100, " ...");
+            return $content;
         }
 
         /**
