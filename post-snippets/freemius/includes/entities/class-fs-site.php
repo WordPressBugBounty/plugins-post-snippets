@@ -10,15 +10,15 @@
         exit;
     }
 
-    /**
-     * @property int $blog_id
-     */
-    #[AllowDynamicProperties]
     class FS_Site extends FS_Scope_Entity {
         /**
          * @var number
          */
         public $site_id;
+        /**
+         * @var int
+         */
+        public $blog_id;
         /**
          * @var number
          */
@@ -231,6 +231,7 @@
 
             foreach ( $sandbox_wp_environment_domains as $domain) {
                 if (
+                    ( $host === $domain ) ||
                     fs_ends_with( $host, '.' . $domain ) ||
                     fs_ends_with( $host, '-' . $domain )
                 ) {
