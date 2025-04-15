@@ -2,9 +2,9 @@
 Contributors: Postsnippets
 Tags: custom snippet, custom shortcode, snippet, snippets, shortcode, shortcodes, block, blocks, html
 Requires at least: 5.3
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 8
-Stable tag: 4.0.9
+Stable tag: 4.0.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,7 @@ Create WordPress custom snippets shortcodes and reusable content and insert them
 
 > Create custom shortcodes and reusable content and insert them in into your posts and pages.
 
-This plugin lets you build a library with snippets of HTML, PHP code or reoccurring text that you often use in your posts and pages. You can use predefined variables to replace parts of the snippet on insert. All snippets are available in the post editor via a button in the Visual mode. The snippet can be inserted as defined, or as a shortcode to keep flexibility for updating the snippet. PHP code is supported for snippets inserted as shortcodes.
+[Post Snippets](https://postsnippets.com/) lets you build a library with snippets of HTML, PHP code or reoccurring text that you often use in your posts and pages. You can use predefined variables to replace parts of the snippet on insert. All snippets are available in the post editor via a button in the Visual mode. The snippet can be inserted as defined, or as a shortcode to keep flexibility for updating the snippet. PHP code is supported for snippets inserted as shortcodes.
 
 = Basic Features =
 
@@ -113,6 +113,10 @@ your clients to be able to use PHP code in a post snippet.
 5. Easy to access inline documentation (top right 'Help' button in WordPress).
 
 == Changelog ==
+
+= Version 4.0.10 - 15 Apr 2025 =
+
+- Tested Upto WordPress Latest Version 6.8
 
 = Version 4.0.9 - 27 Jan 2025 =
 
