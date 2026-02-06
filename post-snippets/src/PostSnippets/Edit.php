@@ -1265,7 +1265,22 @@ class Edit {
 
             //******************** Preparing Snippet Description ************************* */
 
-                $snippet_desc = sanitize_textarea_field( $_REQUEST['snippet_desc'] ?? '' );
+                $allowed_html = apply_filters( 'ps_snippet_desc_allowed_html',  array(
+                    'h1' => array(),
+                    'h2' => array(),
+                    'h3' => array(),
+                    'h4' => array(),
+                    'h5' => array(),
+                    'h6' => array(),
+                    'b' => array(),
+                    'strong' => array(),
+                    'pre' => array(),
+                    'p' => array(),
+                    'ul' => array(),
+                    'ol' => array(),
+                    'li' => array(),
+                ));
+                $snippet_desc = wp_kses( $_REQUEST['snippet_desc'] ?? '',  $allowed_html);
 
             //****************************** END *********************************** */
 
@@ -1618,19 +1633,25 @@ class Edit {
 
             $snippet_php = PSallSnippets::get_snippet_php($imported_snippet['snippet_php']);
 
+            // Sanitize imported snippet content to prevent XSS
+            $sanitized_content = self::sanitize_snippet_content(
+                $imported_snippet['snippet_content'] ?? '', 
+                $snippet_php
+            );
+
             $snippet_added = $wpdb->insert(
                 $table_name,
                 array(
                     'snippet_group'         => $imported_snippet['snippet_group'],
                     'snippet_title'         => self::filter_snippet_title( $imported_snippet['snippet_title'] ),
-                    'snippet_content'       => $imported_snippet['snippet_content'],
+                    'snippet_content'       => $sanitized_content,
                     'snippet_date'          => current_time( 'mysql' ),
                     'snippet_vars'          => self::filter_snippet_vars( $imported_snippet['snippet_vars'] ),
-                    'snippet_desc'          => $imported_snippet['snippet_desc'],
-                    'snippet_status'        => (($imported_snippet['snippet_status']?? 0)       == 1) ? : 0,     //Disable by default
-                    'snippet_shortcode'     => (($imported_snippet['snippet_shortcode']?? 0)    == 1) ? : 0,
+                    'snippet_desc'          => sanitize_textarea_field($imported_snippet['snippet_desc'] ?? ''),
+                    'snippet_status'        => (($imported_snippet['snippet_status']?? 0)       == 1) ? 1 : 0,     //Disable by default
+                    'snippet_shortcode'     => (($imported_snippet['snippet_shortcode']?? 0)    == 1) ? 1 : 0,
                     'snippet_php'           => $snippet_php,
-                    'snippet_wptexturize'   => (($imported_snippet['snippet_wptexturize']?? 0)  == 1) ? : 0,
+                    'snippet_wptexturize'   => (($imported_snippet['snippet_wptexturize']?? 0)  == 1) ? 1 : 0,
                 )
             );
 
@@ -1684,6 +1705,65 @@ class Edit {
         $snippet_title =  preg_replace($pattern, $replacement, $snippet_title);
 
         return $snippet_title;
+    }
+
+    /**
+     * Sanitize snippet content based on snippet type
+     * 
+     * @param string $content The snippet content to sanitize
+     * @param int $snippet_php The snippet type (0=regular, 1=PHP, 2=JS, 3=CSS)
+     * @return string Sanitized content
+     */
+    public static function sanitize_snippet_content($content, $snippet_php = 0) {
+        if (empty($content)) {
+            return $content;
+        }
+
+        // For JavaScript snippets, validate and sanitize dangerous patterns
+        if ($snippet_php == 2) {
+            // Remove potential XSS vectors while preserving legitimate JavaScript code
+            $dangerous_patterns = array(
+                '/<script[^>]*>/i',           // Remove script tags (they shouldn't be in content)
+                '/<\/script>/i',              // Remove closing script tags
+                '/javascript\s*:/i',          // Remove javascript: protocol
+                '/on\w+\s*=/i',               // Remove event handlers (onclick, onerror, etc.)
+                '/<iframe/i',                 // Remove iframe tags
+                '/<object/i',                 // Remove object tags
+                '/<embed/i',                  // Remove embed tags
+            );
+            
+            // Remove dangerous patterns
+            foreach ($dangerous_patterns as $pattern) {
+                $content = preg_replace($pattern, '', $content);
+            }
+            
+            // Additional validation: check for common XSS patterns
+            $xss_patterns = array(
+                '/document\.cookie/i',
+                '/document\.write\s*\(/i',
+                '/eval\s*\(/i',
+                '/Function\s*\(/i',
+            );
+            
+            // Log or remove XSS patterns (for now, we'll allow but could be more strict)
+            // In production, you might want to reject snippets with these patterns
+            
+            return $content;
+        }
+        
+        // For CSS snippets, sanitize CSS-specific XSS vectors
+        if ($snippet_php == 3) {
+            // Remove potential XSS in CSS
+            $content = preg_replace('/expression\s*\(/i', '', $content);  // Remove CSS expressions
+            $content = preg_replace('/javascript\s*:/i', '', $content);  // Remove javascript: protocol
+            $content = preg_replace('/@import/i', '', $content);         // Remove @import (could be used for XSS)
+            // Remove HTML tags from CSS
+            $content = wp_strip_all_tags($content);
+            return $content;
+        }
+        
+        // For regular snippets, use standard WordPress sanitization
+        return wp_kses_post($content);
     }
 
 

@@ -111,15 +111,21 @@ class DBTable{
 
                 $snippet_php = PSallSnippets::get_snippet_php($snippet["php"]);
 
+                // Sanitize snippet content before inserting
+                $snippet_content = Edit::sanitize_snippet_content(
+                    $snippet["snippet"] ?? '', 
+                    $snippet_php
+                );
+
                 $snippet_added = $wpdb->insert(
                     $table_name,
                     array(
                         'snippet_group'         => maybe_serialize( array($group_id) ),
-                        'snippet_title'         => Edit::filter_snippet_title( $snippet["title"] ),
-                        'snippet_content'       => addslashes( $snippet["snippet"] ),
+                        'snippet_title'         => Edit::filter_snippet_title( $snippet["title"] ?? '' ),
+                        'snippet_content'       => $snippet_content,
                         'snippet_date'          => current_time( 'mysql' ),
-                        'snippet_vars'          => Edit::filter_snippet_vars( $snippet['vars'] ),
-                        'snippet_desc'          => sanitize_textarea_field( $snippet["description"] ),
+                        'snippet_vars'          => Edit::filter_snippet_vars( $snippet['vars'] ?? '' ),
+                        'snippet_desc'          => sanitize_textarea_field( $snippet["description"] ?? '' ),
                         'snippet_status'        => 1,     //Enabled by default
                         'snippet_shortcode'     => ( ($snippet["shortcode"]      ?? 0 ) == 1 ) ? 1 : 0,
                         'snippet_php'           => $snippet_php,
