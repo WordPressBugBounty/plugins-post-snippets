@@ -1560,7 +1560,7 @@ class Edit {
 
             $snippet_vars_text = '';
             foreach ($snippet_vars as $var => $value) {
-                $snippet_vars_text .= ' '. $var . (!empty($value)?'=':'') . $value;
+                $snippet_vars_text .= ' '. $var . (!empty($value)?'=':'=""') . $value;
             }
 
             $shortcode = '['.self::get_data('snippet_title') . $snippet_vars_text . ']';
