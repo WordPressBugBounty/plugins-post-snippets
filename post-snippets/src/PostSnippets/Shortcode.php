@@ -47,7 +47,12 @@ class Shortcode
                 $short_atts["content"] = $content;
             }
             foreach ($short_atts as $key => $val) {
-                $clean_val = htmlspecialchars( $val, ENT_QUOTES, 'UTF-8' );
+                $clean_val = strtr((string) $val,
+                    array(
+                        '"' => '&quot;',
+                        "'" => '&apos;',
+                    )
+                );
                 $snippet_content = str_replace( "{" . $key . "}", $clean_val, $snippet_content );
             }
 
