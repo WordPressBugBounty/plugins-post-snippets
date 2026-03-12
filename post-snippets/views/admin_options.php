@@ -1,3 +1,7 @@
+<?php 
+if ( ! defined( 'ABSPATH' ) ) exit;
+?>
+
 <form method="post" action="options.php">
 <?php
     settings_fields(\PostSnippets::SETTINGS);

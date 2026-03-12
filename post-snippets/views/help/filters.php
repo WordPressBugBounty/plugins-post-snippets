@@ -1,3 +1,7 @@
+<?php 
+if ( ! defined( 'ABSPATH' ) ) exit;
+?>
+
 <h2><?php _e('Filters', 'post-snippets'); ?> (<em><?php _e('for developers', 'post-snippets'); ?></em>)</h2>
 
 <p><?php _e('The following filters are available for hooking into the plugin:', 'post-snippets'); ?></p>

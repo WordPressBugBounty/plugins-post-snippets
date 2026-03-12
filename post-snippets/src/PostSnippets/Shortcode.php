@@ -1,6 +1,8 @@
 <?php
 namespace PostSnippets;
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * Shortcode Handling.
  *
@@ -46,13 +48,21 @@ class Shortcode
             if ( $content != null ) {
                 $short_atts["content"] = $content;
             }
-            foreach ($short_atts as $key => $val) {
-                $clean_val = strtr((string) $val,
+            foreach ( $short_atts as $key => $val ) {
+                $val = (string) $val;
+
+                if ( 'url' === strtolower( $key ) || 'href' === strtolower( $key ) ) {
+                    $val = esc_url_raw( $val );
+                }
+
+                $clean_val = strtr(
+                    $val,
                     array(
                         '"' => '&quot;',
                         "'" => '&apos;',
                     )
                 );
+
                 $snippet_content = str_replace( "{" . $key . "}", $clean_val, $snippet_content );
             }
 

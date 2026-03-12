@@ -1,3 +1,7 @@
+<?php 
+if ( ! defined( 'ABSPATH' ) ) exit;
+?>
+
 <h2><?php _e('Advanced', 'post-snippets'); ?> (<em><?php _e('for developers', 'post-snippets'); ?></em>)</h2>
 
 <p>

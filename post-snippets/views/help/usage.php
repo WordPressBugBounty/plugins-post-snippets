@@ -1,3 +1,7 @@
+<?php 
+if ( ! defined( 'ABSPATH' ) ) exit;
+?>
+
 <h2><?php _e('Usage', 'post-snippets'); ?></h2>
 
 

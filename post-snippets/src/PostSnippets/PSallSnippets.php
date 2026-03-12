@@ -1,6 +1,8 @@
 <?php
 namespace PostSnippets;
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * Post Snippets All Snippets Table.
  *
@@ -1036,7 +1038,7 @@ if (class_exists('PostSnippets')) {
 
                         ?>
 
-                        <script><?php echo esc_js($snippet_content); ?></script>
+                        <script><?php echo $snippet_content; ?></script>
 
                         <?php
                     } else {
@@ -1066,7 +1068,7 @@ if (class_exists('PostSnippets')) {
                         ?>
 
                         <style>
-                            <?php echo esc_html($snippet_content); ?>
+                            <?php echo $snippet_content; ?>
                         </style>
 
                         <?php

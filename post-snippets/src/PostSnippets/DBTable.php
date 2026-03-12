@@ -1,6 +1,8 @@
 <?php
 namespace PostSnippets;
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 class DBTable{
 
     public $psp_db_version = '1.0';

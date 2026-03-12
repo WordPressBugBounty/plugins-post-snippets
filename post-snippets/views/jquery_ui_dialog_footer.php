@@ -1,3 +1,7 @@
+<?php 
+if ( ! defined( 'ABSPATH' ) ) exit;
+?>
+
 <!-- START: Post Snippets UI Dialog -->
 <?php // Setup the dialog divs ?>
 <div class="hidden">

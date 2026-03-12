@@ -1,3 +1,7 @@
+<?php 
+if ( ! defined( 'ABSPATH' ) ) exit;
+?>
+
 <h2><?php _e('Setup Gutenberg Block', 'post-snippets'); ?></h2>
 
 <ul>

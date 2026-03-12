@@ -1,3 +1,7 @@
+<?php 
+if ( ! defined( 'ABSPATH' ) ) exit;
+?>
+
 <form method="post" action="" class="post-snippets-wrap">
     <?php 
 wp_nonce_field( 'update_snippets', 'update_snippets_nonce' );

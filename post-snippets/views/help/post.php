@@ -1,3 +1,7 @@
+<?php 
+if ( ! defined( 'ABSPATH' ) ) exit;
+?>
+
 <h2><?php _e('The Post Editor', 'post-snippets'); ?></h2>
 
 <img src="<?php echo plugins_url('assets/img/help/post-snippets-editor.jpg', \PostSnippets::FILE); ?>" />

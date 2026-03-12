@@ -1,3 +1,7 @@
+<?php 
+if ( ! defined( 'ABSPATH' ) ) exit;
+?>
+
 <p><strong>
 <?php _e('Related:', 'post-snippets'); ?>
 </strong></p>

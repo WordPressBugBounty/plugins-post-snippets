@@ -1,6 +1,7 @@
 <?php
-
 namespace PostSnippets;
+
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
  * Post Snippets Features.

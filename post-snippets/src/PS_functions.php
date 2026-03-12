@@ -1,4 +1,7 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * @return  gutenbergBlocks
  * removing post-snippet-block from gutenberg Editor for custom post type when exclude form custom editor is unchecked.

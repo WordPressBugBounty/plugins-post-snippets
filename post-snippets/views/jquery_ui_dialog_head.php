@@ -1,3 +1,6 @@
+<?php 
+if ( ! defined( 'ABSPATH' ) ) exit;
+?>
 
 <!-- START: c and related functions -->
 <script type='text/javascript'>

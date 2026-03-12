@@ -1,3 +1,7 @@
+<?php 
+if ( ! defined( 'ABSPATH' ) ) exit;
+?>
+
 <h2 style="margin-top:40px;">More plugins by WPexperts:</h2>
 
 <style>

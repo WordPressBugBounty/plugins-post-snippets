@@ -1,6 +1,8 @@
 <?php
 namespace PostSnippets;
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * View Handling.
  *
