@@ -51,7 +51,7 @@ class Shortcode
             foreach ( $short_atts as $key => $val ) {
                 $val = (string) $val;
 
-                if ( 'url' === strtolower( $key ) || 'href' === strtolower( $key ) ) {
+                if ( 'url' === strtolower( $key ) || 'href' === strtolower( $key ) || 'src' === strtolower( $key ) ) {
                     $val = esc_url_raw( $val );
                 }
 
@@ -79,22 +79,15 @@ class Shortcode
                 $snippet_content = self::phpEval( $snippet_content );
                 
                 // WPTexturize the Snippet
-                if ( !empty($snippet['snippet_wptexturize']) && ( $snippet['snippet_wptexturize'] == true ) ) {
-                    
+                if ( ! empty( $snippet['snippet_wptexturize'] ) && ( $snippet['snippet_wptexturize'] == true ) ) {
                     $snippet_content = html_entity_decode( addslashes ( wptexturize ( htmlentities( stripslashes ( $snippet_content ), ENT_NOQUOTES ) ) ) );
-
                 }
 
-            }
-            else{
-
-                if ( !empty($snippet['snippet_wptexturize']) && ( $snippet['snippet_wptexturize'] == true ) ) {
-
+            } else {
+                if ( ! empty( $snippet['snippet_wptexturize'] ) && ( $snippet['snippet_wptexturize'] == true ) ) {
                     $snippet_content = html_entity_decode ( addslashes ( wptexturize ( htmlentities( stripslashes ( $snippet_content ), ENT_NOQUOTES ) ) ) );
-                }
-                else{
-
-                    $snippet_content =  $snippet_content ;
+                } else {
+                    $snippet_content =  html_entity_decode ( $snippet_content );
                 }
             }            
             
