@@ -4,7 +4,7 @@ Tags: custom snippet, custom shortcode, snippet, snippets, shortcode
 Requires at least: 5.3
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 4.0.19
+Stable tag: 4.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -114,242 +114,201 @@ your clients to be able to use PHP code in a post snippet.
 
 == Changelog ==
 
-= Version 4.0.19 - 25 March 2026 =
+= Version 4.1.0 - 10 April 2026 =
+ * Vulnerability Fixes.
+ * Added - Data types along with snippet's variables/placeholders.
 
-- Fixed broken images in snippets.
+= Version 4.0.19 - 24 March 2026 =
+ * Fixed broken images in snippets.
 
 = Version 4.0.18 - 12 March 2026 =
-
-- Fixed JS Code breaks
+ * Fixed JS Code breaks.
 
 = Version 4.0.17 - 27 February 2026 =
-
-- Fixed HTML tags being printed as strings
+ * Fixed HTML tags being printed as strings
 
 = Version 4.0.16 - 23 February 2026 =
-
-- Vulnerability Fix
+ * Vulnerability Fix.
 
 = Version 4.0.15 - 05 February 2026 =
-
-- Rollback to older version
+ * Rollback to older version.
 
 = Version 4.0.14 - 03 February 2026 =
-
-- Bug Fixes
+ * Bug Fixes.
 
 = Version 4.0.13 - 30 January 2026 =
-
-- Bug Fixes
+ * Bug Fixes.
 
 = Version 4.0.12 - 05 January 2026 =
-
-- Bug Fixes
+ * Bug Fixes.
 
 = Version 4.0.11 - 05 May 2025 =
-
-- Updated freemius Code
+ * Updated freemius Code.
 
 = Version 4.0.10 - 15 Apr 2025 =
-
-- Tested Upto WordPress Latest Version 6.8
+ * Tested Upto WordPress Latest Version 6.8
 
 = Version 4.0.9 - 27 Jan 2025 =
-
-- Updated freemius SDK
+ * Updated freemius SDK.
 
 = Version 4.0.8 - 09 Dec 2024 =
-
-- Fixed - Minor bug fixes and improvements.
-- Improvement - Updated Feedback library to the latest version.
-- Updated freemius SDK
+ * Fixed - Minor bug fixes and improvements.
+ * Improvement - Updated Feedback library to the latest version.
+ * Updated freemius SDK
 
 = Version 4.0.7 - 05 Nov 2024 =
-
-- Fixed - Minor bug fixes and improvements.
+ * Fixed - Minor bug fixes and improvements.
 
 = Version 4.0.6 - 07 Aug 2024 =
-
-- Tweak - Added compatibility for WordPress Version 6.6.x
+ * Tweak - Added compatibility for WordPress Version 6.6.x
 
 = Version 4.0.5 - 17 may 2024 =
-
-- Tweak - Added compatibility for WordPress Version 6.5.3
+ * Tweak - Added compatibility for WordPress Version 6.5.3
 
 = Version 4.0.4 - 6 july 2023 =
-
-- Fixed - Minor Bug fixes
-- Improvement - Updated Feedback library to the latest version.
+ * Fixed - Minor Bug fixes
+ * Improvement - Updated Feedback library to the latest version.
 
 = Version 4.0.3 - 14 Feb 2023 =
-
-- Improvement - Added Validation, so on 'Custom CSS' snippet only css styles can be added.
+ * Improvement - Added Validation, so on 'Custom CSS' snippet only css styles can be added.
 
 = Version 4.0.2 - 3 Jan 2023 =
-
-- Tweak- Minimum required wordpress version change from 5.8 to 5.3
+ * Tweak- Minimum required wordpress version change from 5.8 to 5.3
 
 = Version 4.0.1 - 14 Dec 2022 =
-
-- Fixed - Error when using script tag in snippets
+ * Fixed - Error when using script tag in snippets
 
 = Version 4.0.0 - 14 Jan 2021 =
-
-- Improvement - Plugin code revamped.
-- Improvement - Added sanitation, escaping and validation.
-- Improvement - Cloud upload and download.
-- Improvement - Snippets now getting saved in separate db table instead of options table.
-- Improvement - back-end UI .
-- Improvement - Bulk Actions now include Activate/Deactivate
-- Improvement - Post Editor screen for editing of snippets.
-- Improvement - Snippets now displayed as table list.
-- Added       - Snippets Groups, 
-- Added       - Option to delete snippets on uninstalling of plugins
-- Fixed       - Block Editor bugs
+ * Improvement - Plugin code revamped.
+ * Improvement - Added sanitation, escaping and validation.
+ * Improvement - Cloud upload and download.
+ * Improvement - Snippets now getting saved in separate db table instead of options table.
+ * Improvement - back-end UI .
+ * Improvement - Bulk Actions now include Activate/Deactivate
+ * Improvement - Post Editor screen for editing of snippets.
+ * Improvement - Snippets now displayed as table list.
+ * Added       - Snippets Groups, 
+ * Added       - Option to delete snippets on uninstalling of plugins
+ * Fixed       - Block Editor bugs
 
 = Version 3.1.3 - 5 Mar 2021 =
-
-* Added - snippets search functionality 
-* Added - REST API functionality 
+ * Added - snippets search functionality 
+ * Added - REST API functionality 
 
 = Version 3.1.2 - 11 Nov 2020 =
-
-* Updated freemius SDK
+ * Updated freemius SDK
 
 = Version 3.1.1 - 4 Nov 2020 =
-
-* Fix - Menu icons not loading in The7 Theme
-* Fix - Cloud Features not working
+ * Fix - Menu icons not loading in The7 Theme
+ * Fix - Cloud Features not working
 
 = Version 3.1 - 1 Sep 2020 =
-
-* Fix - Post Snippets Blocks throwing error in WordPress 5.5
+ * Fix - Post Snippets Blocks throwing error in WordPress 5.5
 
 = Version 3.0.23 - 20 May 2020 =
-
-* Improvement - Improved import functionality
-* Fix - Issues in freemius redirects
-* Fix - POST_SNIPPETS_ALLOW_EDIT_POSTS not working
+ * Improvement - Improved import functionality
+ * Fix - Issues in freemius redirects
+ * Fix - POST_SNIPPETS_ALLOW_EDIT_POSTS not working
 
 = Version 3.0.22 - 05 May 2020 =
-
-* Fixed Saving breaks when PHP snippets are disabled
-* Fixed Wrong message being displayed when we save title without making any changes
-* Fixed Title always saving in lowercase letters
-* Improvement Code Optimized to improve security
+ * Fixed Saving breaks when PHP snippets are disabled
+ * Fixed Wrong message being displayed when we save title without making any changes
+ * Fixed Title always saving in lowercase letters
+ * Improvement Code Optimized to improve security
 
 = Version 3.0.19 - 17 Apr 2020 =
-
-* Fixed Title not saving on save button
-* Fixed On Plugin activation it redirects to some inaccessible URL
-* Fixed Move not working if we move more than 1 snippets
+ * Fixed Title not saving on save button
+ * Fixed On Plugin activation it redirects to some inaccessible URL
+ * Fixed Move not working if we move more than 1 snippets
 
 = Version 3.0.18 - 09 Apr 2020 =
-
-* Updated News Page and Author
-* Fixed Duplicate snippet not working
+ * Updated News Page and Author
+ * Fixed Duplicate snippet not working
 
 = Version 3.0.17 - 02 Apr 2020 =
-
-* Fixed reordering of snippets (Premium only)
+ * Fixed reordering of snippets (Premium only)
 
 = Version 3.0.16 - 16 Mar 2020 =
-
-* Fixed rename snippet
+ * Fixed rename snippet
 
 = Version 3.0.15 - 10 Mar 2020 =
-
-* Gutenberg block
-* Save snippets through ajax calls
-* News page with changelog
-* Post Snippets menu
+ * Gutenberg block
+ * Save snippets through ajax calls
+ * News page with changelog
+ * Post Snippets menu
 
 = Version 3.0.14 - 19 Nov 2019 =
-
-* Fixed issue with attributes containing hyphens/dashes
+ * Fixed issue with attributes containing hyphens/dashes
 
 = Version 3.0.13 - 12 Nov 2019 =
-
-* Updated Freemius SDK
+ * Updated Freemius SDK
 
 = Version 3.0.12 - 28 Aug 2019 =
-
-* Updated Freemius SDK
+ * Updated Freemius SDK
 
 = Version 3.0.11 - 2 Lug 2019 =
-
-* Added language pack for TinyMCE
+ * Added language pack for TinyMCE
 
 = Version 3.0.10 - 2 Lug 2019 =
-
-* Updated Freemius SDK
-* Added compatibility with PHP 7.3
+ * Updated Freemius SDK
+ * Added compatibility with PHP 7.3
 
 = Version 3.0.9 - 1 Lug 2019 =
-
-* Updated Freemius SDK (Premium only)
+ * Updated Freemius SDK (Premium only)
 
 = Version 3.0.8 - 8 Apr 2019 =
-
-* Added multi-site snippets sync feature (Premium only)
+ * Added multi-site snippets sync feature (Premium only)
 
 = Version 3.0.7 - 27 Feb 2019 =
-
-* Removed unused function
+ * Removed unused function
 
 = Version 3.0.6 - 27 Feb 2019 =
-
-* Security Fix
-* Rich Text Format (PRO version only)
+ * Security Fix
+ * Rich Text Format (PRO version only)
 
 = Version 3.0.5 - 13 May 2018 =
-
-* Fix conflict with SiteOrigin Page Builder (Editor), increase z-index so Post Snippets Insert box opens on top of the editor
-* Only show submenu when Post Snippets is opened, not on all Settings pages, and remove Support Forum and Contact submenu items
-* Improve stability by updating Post Snippets to string-based menu slug
-* Add instructions and optimize UI for new users/new sites (with slightly pulsating "Add New Snippet" button)
-* Automatically disable Post Snippets if premium version is activated
-* Make 'Post Snippets' header title in plugin translatable
+ * Fix conflict with SiteOrigin Page Builder (Editor), increase z-index so Post Snippets Insert box opens on top of the editor
+ * Only show submenu when Post Snippets is opened, not on all Settings pages, and remove Support Forum and Contact submenu items
+ * Improve stability by updating Post Snippets to string-based menu slug
+ * Add instructions and optimize UI for new users/new sites (with slightly pulsating "Add New Snippet" button)
+ * Automatically disable Post Snippets if premium version is activated
+ * Make 'Post Snippets' header title in plugin translatable
 
 = Version 3.0.4 - 20 Feb 2018 =
-
-* Add "Support forum" link to support forum
-* Add "Contact Us" link with contact form
-* Add "Account" and "Upgrade" link for Pro version
-* Updated Freemius SDK to 1.2.4
+ * Add "Support forum" link to support forum
+ * Add "Contact Us" link with contact form
+ * Add "Account" and "Upgrade" link for Pro version
+ * Updated Freemius SDK to 1.2.4
 
 = Version 3.0.3 - 15 Feb 2018 =
-
-* FIX:
-    * Check for unique titles/shortcodes when creating new snippets, prevent duplicates
-    * Improper slashes parsing, some users woudl see multiple clashes in shortcodes/PHP code, causing snippets to not render correctly
-    * Prevent some editors (TinyMCE Advanced) from stacking above the Post Snippets dialog, add zindex to .ui-dialog
+ * FIX:
+  * Check for unique titles/shortcodes when creating new snippets, prevent duplicates
+  * Improper slashes parsing, some users woudl see multiple clashes in shortcodes/PHP code, causing snippets to not render correctly
+  * Prevent some editors (TinyMCE Advanced) from stacking above the Post Snippets dialog, add zindex to .ui-dialog
 
 = Version 3.0.2 - 13 Jan 2018 =
-
-* Fixed a PHP error by changing a new style array syntax to the version that also works in PHP 5.3 (this: array())
+ * Fixed a PHP error by changing a new style array syntax to the version that also works in PHP 5.3 (this: array())
 
 = Version 3.0.0 - 13 Jan 2018 =
+ * NOTES:
+  * Reviewed close to 30 issues and either closed, fixed or registered them to be fixed in the future, see https://github.com/GreenTreeLabs/post-snippets/issues/68
 
-* NOTES:
-    * Reviewed close to 30 issues and either closed, fixed or registered them to be fixed in the future, see https://github.com/GreenTreeLabs/post-snippets/issues/68
+ * NEW:
+  * A nice new User Interface, a good starting point for more improvements in the future. Switched from old tables to div's and css
+  * The new UI supports updating the snippet name/shortcode without a page refresh
+  * Expanding and collapsing individual snippets, or all snippets with a click, is now possible
+  * The state of snippets (expand/collapse) is personal, so snippet managers can open and close snippets as they see fit
+  * Added a date to the export filename as requested by multiple users, example: post-snippets-export-2014-06-14.zip
 
-* NEW:
-    * A nice new User Interface, a good starting point for more improvements in the future. Switched from old tables to div's and css
-    * The new UI supports updating the snippet name/shortcode without a page refresh
-    * Expanding and collapsing individual snippets, or all snippets with a click, is now possible
-    * The state of snippets (expand/collapse) is personal, so snippet managers can open and close snippets as they see fit
-    * Added a date to the export filename as requested by multiple users, example: post-snippets-export-2014-06-14.zip
+ * FIX:
+  * Compatibility for PHP 7.2
+  * Fix some URL's in the plugin so they also work when post-snippets folder is not exactly "post-snippets"
+  * Remove uninstall actions, I believe it's not user friendly to remove data when user uninstalls, what if they are updating (manually)?
 
-* FIX:
-    * Compatibility for PHP 7.2
-    * Fix some URL's in the plugin so they also work when post-snippets folder is not exactly "post-snippets"
-    * Remove uninstall actions, I believe it's not user friendly to remove data when user uninstalls, what if they are updating (manually)?
-
-* DEV:
-    * Added version tags to assets, so updated of javascript and css happen without issues in the following updates
-    * Added conditional code for checking if dialog and tabs functions exists, by KZeni
-    * Added Freemius SDK, which will help with improving Post Snippets in the future. It's completely opt-in, you can keep it disabled.
+ * DEV:
+  * Added version tags to assets, so updated of javascript and css happen without issues in the following updates
+  * Added conditional code for checking if dialog and tabs functions exists, by KZeni
+  * Added Freemius SDK, which will help with improving Post Snippets in the future. It's completely opt-in, you can keep it disabled.
 
 = Version 2.5.4 - 30 Nov 2017 =
  * UI improvement: Add update, add new and delete buttons to top of Snippets list, not just bottom
@@ -722,15 +681,6 @@ your clients to be able to use PHP code in a post snippet.
  * Initial Release
 
 == Upgrade Notice ==
-
-= Version 4.0.6 - 31 july 2024 =
-
-* Added compatibility for WordPress Version 6.6.1
-
-= Version 3.0.10 - 2 Lug 2019 =
-
-* Updated Freemius SDK
-* Added compatibility with PHP 7.3
 
 = 1.9 =
 Note that starting with this version and moving forward, at least PHP v5.2.4 is

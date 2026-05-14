@@ -41,30 +41,38 @@ class Shortcode
 
             $texturize = $snippet["snippet_wptexturize"]?? false;
 
+            foreach ($atts as $key => $val) {
+                if ( is_numeric($key) ) {
+                    $attribute = explode('=', $val, 2);
+                    
+                    if (count($attribute) < 2) {
+                        continue;
+                    }
+                    
+                    $keyName  = trim($attribute[0]);
+                    $keyValue = trim($attribute[1], " \t\n\r\0\x0B\"'");
+                    
+                    $atts[$keyName] = $keyValue;
+                    unset($atts[$key]);
+                }
+            }
+
             $short_atts = shortcode_atts( $default_atts, $atts );
 
             $snippet_content =  $snippet['snippet_content'];
 
+            if ( ! empty( $snippet['snippet_php'] ) && (int) $snippet['snippet_php'] === 1 ) {
+                $snippet_content = stripslashes( $snippet_content );
+            }
+
             if ( $content != null ) {
                 $short_atts["content"] = $content;
             }
-            foreach ( $short_atts as $key => $val ) {
-                $val = (string) $val;
-
-                if ( 'url' === strtolower( $key ) || 'href' === strtolower( $key ) || 'src' === strtolower( $key ) ) {
-                    $val = esc_url_raw( $val );
-                }
-
-                $clean_val = strtr(
-                    $val,
-                    array(
-                        '"' => '&quot;',
-                        "'" => '&apos;',
-                    )
-                );
-
-                $snippet_content = str_replace( "{" . $key . "}", $clean_val, $snippet_content );
-            }
+            $snippet_content = self::replaceSnippetVariables(
+                $snippet_content,
+                $short_atts,
+                ! empty( $snippet['snippet_php'] ) && (int) $snippet['snippet_php'] === 1
+            );
 
             // There might be the case that a snippet contains
             // the post snippets reserved variable {content} to
@@ -110,8 +118,6 @@ class Shortcode
             return $content;
         }
 
-        $content = stripslashes($content);
-
         /**Removing Initial PHP Tag */
         $content = ltrim($content, "<?php<?PHP<?=");
         
@@ -120,6 +126,112 @@ class Shortcode
         $content = ob_get_clean();
 
         return addslashes($content);
+    }
+
+    public static function replaceSnippetVariables($snippet_content, $short_atts, $php_snippet = false)
+    {
+        foreach ( $short_atts as $key => $val ) {
+            $short_atts[ $key ] = self::sanitizeVariableValue( $key, $val, $php_snippet );
+        }
+
+        if ( $php_snippet ) {
+            return self::replacePhpVariables( $snippet_content, $short_atts );
+        }
+
+        foreach ( $short_atts as $key => $val ) {
+            $snippet_content = str_replace( '{' . $key . '}', $val, $snippet_content );
+        }
+
+        return $snippet_content;
+    }
+
+    public static function sanitizeVariableValue($key, $val, $php_snippet = false)
+    {
+        $val = (string) $val;
+
+        $colon = strpos($key, ':');
+
+        if ( $colon !== false ) {
+            $text = explode(":", $key);
+
+            switch (strtolower($text[1])) {
+                case 'url':
+                    $val = esc_url_raw( $val );
+                    break;
+                case 'text':
+                    $val = esc_html( $val );
+                    break;
+                case 'attr':
+                    $val = esc_attr( $val );
+                    break;
+                case 'xml':
+                    $val = esc_xml( $val );
+                    break;
+                case 'textarea':
+                    $val = esc_textarea( $val );
+                    break;
+            }
+        }
+
+        if ( $php_snippet ) {
+            return $val;
+        }
+
+        return strtr(
+            $val,
+            array(
+                '"' => '&quot;',
+                "'" => '&apos;',
+            )
+        );
+    }
+
+    public static function replacePhpVariables($snippet_content, $short_atts)
+    {
+        $string_pattern = '/\'(?:\\\\.|[^\'\\\\])*\'|"(?:\\\\.|[^"\\\\])*"/s';
+
+        $snippet_content = preg_replace_callback(
+            $string_pattern,
+            function ( $matches ) use ( $short_atts ) {
+                $literal = $matches[0];
+                $quote = $literal[0];
+                $body = substr( $literal, 1, -1 );
+
+                foreach ( $short_atts as $key => $val ) {
+                    $body = str_replace(
+                        '{' . $key . '}',
+                        self::escapePhpStringLiteralValue( $val, $quote ),
+                        $body
+                    );
+                }
+
+                return $quote . $body . $quote;
+            },
+            $snippet_content
+        );
+
+        foreach ( $short_atts as $key => $val ) {
+            $snippet_content = str_replace( '{' . $key . '}', var_export( $val, true ), $snippet_content );
+        }
+
+        return $snippet_content;
+    }
+
+    public static function escapePhpStringLiteralValue($val, $quote)
+    {
+        if ( $quote === '"' ) {
+            return str_replace(
+                array( '\\', '"', '$' ),
+                array( '\\\\', '\\"', '\\$' ),
+                $val
+            );
+        }
+
+        return str_replace(
+            array( '\\', "'" ),
+            array( '\\\\', "\\'" ),
+            $val
+        );
     }
 
     /**

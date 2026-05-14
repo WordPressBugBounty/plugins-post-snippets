@@ -11,6 +11,20 @@ class WPEditor
 {
     const TINYMCE_PLUGIN_NAME = 'post_snippets';
 
+    /**
+     * Encode a snippet value so it is safe to embed in an inline script.
+     *
+     * @param string $value Snippet content or shortcode.
+     * @return string JSON string literal.
+     */
+    private function encodeSnippetForInlineScript($value)
+    {
+        return wp_json_encode(
+            (string) $value,
+            JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
+        );
+    }
+
     public function __construct()
     {
         // TinyMCE button must not appear in description editor of ps code, css and js edit pages. 
@@ -204,21 +218,13 @@ class WPEditor
                         }
                     }
 				    $shortcode = $snippet['snippet_title'] . $variables;
-				    array_push( $snippetStack, "var postsnippet_{$key} = '[" . $shortcode . "]';\n" );
+                    array_push( $snippetStack, "var postsnippet_{$key} = " . $this->encodeSnippetForInlineScript( '[' . $shortcode . ']' ) . ";\n" );
 			    } else if(isset($snippet['snippet_content'])) {
 				    // To use $snippet is probably not a good naming convention here.
 				    // rename to js_snippet or something?
-				    $snippet = $snippet['snippet_content'];
-				    # Fixes for potential collisions:
-				    /* Replace <> with char codes, otherwise </script> in a snippet will break it */
-				    $snippet = str_replace( '<', '\x3C', str_replace( '>', '\x3E', $snippet ) );
-				    /* Escape " with \" */
-				    // $snippet = str_replace( '"', '\"', $snippet );
-                    // $snippet = htmlspecialchars( stripslashes( $snippet ) );
-				    /* Remove CR and replace LF with \n to keep formatting */
-				    $snippet = str_replace( chr( 13 ), '', str_replace( chr( 10 ), '\n', $snippet ) );
+                    $snippet = $snippet['snippet_content'];
 				    # Print out the variable containing the snippet
-				    array_push( $snippetStack, "var postsnippet_{$key} = \"" . $snippet . "\";\n" );
+                    array_push( $snippetStack, "var postsnippet_{$key} = " . $this->encodeSnippetForInlineScript( $snippet ) . ";\n" );
 			    }
 		    }
 	    }

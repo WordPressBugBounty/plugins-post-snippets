@@ -1678,7 +1678,7 @@ class Edit {
         if( !empty($vars) ){
 
             $string = $vars;
-            $pattern = '/([^A-Za-z,=_\d])/i';   /**remove any character from vars that are not Letters, Numbers or digits or Illegal php variable name */
+            $pattern = '/([^A-Za-z,=:_\d])/i';  /**remove any character from vars that are not Letters, Numbers or digits or Illegal php variable name */
             $replacement = '';
             $snippet_vars =  preg_replace($pattern, $replacement, $string);
 
