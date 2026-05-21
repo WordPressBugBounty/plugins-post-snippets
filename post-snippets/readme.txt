@@ -2,9 +2,9 @@
 Contributors: wpexpertsio
 Tags: custom snippet, custom shortcode, snippet, snippets, shortcode
 Requires at least: 5.3
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 4.1.0
+Stable tag: 4.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -113,6 +113,9 @@ your clients to be able to use PHP code in a post snippet.
 5. Easy to access inline documentation (top right 'Help' button in WordPress).
 
 == Changelog ==
+
+= Version 4.1.1 - 21 May 2026 =
+  * Tweak – Compatible with WordPress Version 7.0
 
 = Version 4.1.0 - 10 April 2026 =
  * Vulnerability Fixes.
