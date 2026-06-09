@@ -222,7 +222,7 @@ class WPEditor
 			    } else if(isset($snippet['snippet_content'])) {
 				    // To use $snippet is probably not a good naming convention here.
 				    // rename to js_snippet or something?
-                    $snippet = $snippet['snippet_content'];
+                    $snippet = stripslashes( $snippet['snippet_content'] );
 				    # Print out the variable containing the snippet
                     array_push( $snippetStack, "var postsnippet_{$key} = " . $this->encodeSnippetForInlineScript( $snippet ) . ";\n" );
 			    }
