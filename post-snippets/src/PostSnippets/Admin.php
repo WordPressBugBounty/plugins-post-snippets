@@ -60,7 +60,52 @@ class Admin
 
         });
 
+        add_action('admin_footer', array($this, 'chatbot_ai_modal') );
 
+    }
+
+    /**
+     * Render the chatbot modal HTML
+     */
+    public function chatbot_ai_modal() {
+        if ( ! isset ( $_GET['page'] ) || ! in_array( $_GET['page'], ['post-snippets-edit','post-snippets-edit-css','post-snippets-edit-js'] ) ) {
+            return;
+        }
+
+        ?>
+        <button id="chatbot-toggle" type="button" aria-label="Open AI Assistant">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525L2.06947 20.4839C1.91746 21.1137 2.50286 21.6811 3.1255 21.5032L7.04504 20.3833C8.5447 21.4194 10.2032 22 12 22Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 12H8.01" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 12H12.01" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 12H16.01" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+
+        <div id="chatbot-wrapper" style="display: none;">
+            <div id="chatbot-header">
+                <div class="header-main">
+                    <h3><span class="status-dot"></span> AI Assistant</h3>
+                </div>
+                <div class="header-actions">
+                    <button id="chatbot-close" type="button" aria-label="Close Assistant">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 1L1 13M1 1L13 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="chatbot-messages"></div>
+            <div id="chatbot-input-container">
+                <textarea id="chatbot-input" rows="1" placeholder="Describe the code you need..."></textarea>
+                <button id="chatbot-send" type="button" aria-label="Send message">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 2L11 13M22 2L15 22L11 13M11 13L2 9L22 2" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <?php
     }
 
     public function load_block()
@@ -225,6 +270,13 @@ class Admin
                     'newsPage',
                 )
             );
+
+            $chatbot_ai = add_submenu_page( 'post-snippets',
+						__( 'AI Chatbot', 'post-snippets' ),
+						__( 'AI Chatbot', 'post-snippets' ), $capability, 'post-snippets-chatbot', array(
+				$this,
+				'chatbot_ai',
+			) );
 
             add_submenu_page($this->_admin_page, __('👉 Get Pro Bundle', 'post-snippets'), sprintf('<span style="color:#adff2f!important;">👉 %1$s <b>%2$s</b>&nbsp;&nbsp;➤</span>', __('Get', 'post-snippets'), __('Pro Bundle', 'post-snippets')), $capability, $this->_admin_upgrade_page, '');
 
@@ -461,6 +513,124 @@ class Admin
         );
 
         include PS_PATH . "/views/admin_news.php";
+    }
+
+    public function chatbot_ai() {
+        if (isset($_POST['ps_openai_api_key'])) {
+            check_admin_referer('ps_settings_group-options');
+            $api_key = sanitize_text_field($_POST['ps_openai_api_key']);
+            update_option('ps_openai_api_key', $api_key);
+            echo '<div class="updated"><p>Settings saved successfully.</p></div>';
+        }
+
+        $api_key = get_option('ps_openai_api_key');
+        ?>
+        <div class="wrap ps-ai-settings-wrap">
+            <div class="ps-ai-header-dashboard">
+                <div class="header-content">
+                    <h1>AI Chatbot Mastery</h1>
+                    <p class="subtitle">Connect and configure your advanced AI assistant for intelligent code generation.</p>
+                </div>
+                <div class="status-badge <?php echo $api_key ? 'active' : 'inactive'; ?>">
+                    <span class="dot"></span> <?php echo $api_key ? 'Connected' : 'Disconnected'; ?>
+                </div>
+            </div>
+
+            <div class="ps-ai-dashboard-grid">
+                <div class="ps-ai-card main-settings">
+                    <div class="card-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.778-7.778zM12 12V4m0 8l4-4m-4 4l-4-4"/></svg>
+                        <h2>Authentication</h2>
+                    </div>
+                    <form method="post" action="">
+                        <?php settings_fields('ps_settings_group'); ?>
+                        <div class="input-group">
+                            <label for="ps_openai_api_key">OpenAI API Key</label>
+                            <div class="input-wrapper">
+                                <input type="password" 
+                                       name="ps_openai_api_key" 
+                                       id="ps_openai_api_key" 
+                                       value="<?php echo esc_attr($api_key); ?>" 
+                                       placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+                                <span class="input-hint">Your keys are encrypted and stored securely.</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <?php submit_button('Update Configuration', 'primary large'); ?>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="ps-ai-card help-card">
+                    <div class="card-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        <h2>Guide</h2>
+                    </div>
+                    <div class="card-body">
+                        <ul class="steps">
+                            <li>
+                                <span class="step-num">1</span>
+                                <div>
+                                    <strong>Get Your Key</strong>
+                                    <p>Visit <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI Dashboard</a> to create a new secret key.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="step-num">2</span>
+                                <div>
+                                    <strong>Set Quotas</strong>
+                                    <p>Ensure your account has an active balance or credit to use the API.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="step-num">3</span>
+                                <div>
+                                    <strong>Go Live</strong>
+                                    <p>Paste the key here and start chatting with the assistant on any snippet edit page.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                .ps-ai-settings-wrap { margin-top: 30px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 1000px; }
+                .ps-ai-header-dashboard { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; padding: 20px; background: white; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+                .ps-ai-header-dashboard h1 { margin: 0; font-size: 28px; font-weight: 800; color: #0f172a; }
+                .ps-ai-header-dashboard .subtitle { margin: 8px 0 0; color: #64748b; font-size: 15px; }
+                .status-badge { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 99px; font-size: 13px; font-weight: 600; }
+                .status-badge.active { background: #f0fdf4; color: #166534; }
+                .status-badge.inactive { background: #fef2f2; color: #991b1b; }
+                .status-badge .dot { width: 8px; height: 8px; border-radius: 50%; }
+                .status-badge.active .dot { background: #22c55e; box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2); }
+                .status-badge.inactive .dot { background: #ef4444; }
+                
+                .ps-ai-dashboard-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; }
+                .ps-ai-card { background: white; border-radius: 16px; border: 1px solid #f1f5f9; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); display: flex; flex-direction: column; overflow: hidden; }
+                .ps-ai-card .card-header { padding: 24px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 12px; }
+                .ps-ai-card .card-header h2 { margin: 0; font-size: 18px; font-weight: 600; color: #0f172a; }
+                .ps-ai-card .card-header svg { color: #3b82f6; }
+                
+                .ps-ai-card .card-body, .ps-ai-card form { padding: 30px; flex: 1; }
+                .input-group label { display: block; font-weight: 600; margin-bottom: 10px; color: #334155; }
+                .input-wrapper input { width: 100%; padding: 12px 16px; border-radius: 10px; border: 1px solid #e2e8f0; background: #f8fafc; font-size: 14px; transition: all 0.2s; }
+                .input-wrapper input:focus { border-color: #3b82f6; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); outline: none; background: #fff; }
+                .input-hint { display: block; font-size: 12px; color: #94a3b8; margin-top: 8px; }
+                
+                .card-footer { padding: 20px 30px; background: #f8fafc; border-top: 1px solid #f1f5f9; }
+                .card-footer .submit { margin: 0; }
+                
+                .steps { list-style: none; margin: 0; padding: 0; }
+                .steps li { display: flex; gap: 16px; margin-bottom: 24px; }
+                .step-num { width: 28px; height: 28px; background: #3b82f6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold; flex-shrink: 0; }
+                .steps li strong { display: block; margin-bottom: 4px; color: #0f172a; }
+                .steps li p { margin: 0; font-size: 13px; color: #64748b; line-height: 1.5; }
+                .steps li a { color: #3b82f6; text-decoration: none; font-weight: 500; }
+                .steps li a:hover { text-decoration: underline; }
+            </style>
+        </div>
+        <?php
     }
 
     public function restPage()

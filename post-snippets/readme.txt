@@ -4,7 +4,7 @@ Tags: custom snippet, custom shortcode, snippet, snippets, shortcode
 Requires at least: 5.3
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 4.1.2
+Stable tag: 4.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,6 +27,7 @@ Create WordPress custom snippets shortcodes and reusable content and insert them
 * **Import/Export** Snippets can be imported and exported between sites.
 * **Documentation** Full documentation is available directly from the help panel in the plugin (top right in WordPress).
 * **Uninstall** If you delete the plugin from your plugins panel it cleans up all data it has created in the WordPress database.
+* **AI Chatbot Integration** A built-in AI assistant to help you write and debug snippets directly from the post editor settings and custom code pages.
 
 = Premium Features =
 * **Snippet duplication** Easily duplicate shortcode snippets and insert them into posts and pages.
@@ -113,6 +114,9 @@ your clients to be able to use PHP code in a post snippet.
 5. Easy to access inline documentation (top right 'Help' button in WordPress).
 
 == Changelog ==
+
+= Version 4.2.0 - 18 June 2026 =
+ * Added - Added AI Chatbot integration to assist with generating and debugging code snippets.
 
 = Version 4.1.2 - 09 June 2026 =
   * Fixed removed slashed from Classic Editor.
@@ -687,6 +691,15 @@ your clients to be able to use PHP code in a post snippet.
  * Initial Release
 
 == Upgrade Notice ==
+
+= Version 4.0.6 - 31 july 2024 =
+
+* Added compatibility for WordPress Version 6.6.1
+
+= Version 3.0.10 - 2 Lug 2019 =
+
+* Updated Freemius SDK
+* Added compatibility with PHP 7.3
 
 = 1.9 =
 Note that starting with this version and moving forward, at least PHP v5.2.4 is

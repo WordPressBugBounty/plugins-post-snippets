@@ -11,7 +11,7 @@
  * Plugin Name: Post Snippets (free)
  * Plugin URI: https://www.postsnippets.com
  * Description: Create a library of reusable content and insert it into your posts and pages. Navigate to "Settings > Post Snippets" to get started.
- * Version: 4.1.2
+ * Version: 4.2.0
  * Author: Postsnippets
  * Author URI: https://www.postsnippets.com
  * License: GPL-2.0+
@@ -135,7 +135,7 @@ if ( !function_exists( 'postsnippets_fs' ) ) {
         define( 'PS_MAIN_FILE', basename( __FILE__ ) );
     }
     if ( !defined( 'PS_VERSION' ) ) {
-        define( 'PS_VERSION', '4.1.2' );
+        define( 'PS_VERSION', '4.2.0' );
     }
     if ( !defined( 'PS_MAIN_FILE_PATH' ) ) {
         define( 'PS_MAIN_FILE_PATH', __FILE__ );
@@ -194,10 +194,12 @@ if ( !function_exists( 'postsnippets_fs' ) ) {
             }
             load_plugin_textdomain( 'post-snippets', false, dirname( plugin_basename( __FILE__ ) ) . '/lang/' );
             add_action( 'after_setup_theme', array( &$this, 'phpExecState' ) );
+            add_action( 'admin_enqueue_scripts', array( &$this, 'enqueue_ai_chatbot_script' ) );
             // add_action( 'admin_enqueue_scripts', array($this, 'enqueue_hide_seek_search_library') );
 
             //requiring PS functions file
             require_once 'src/PS_functions.php';
+            require_once 'views/integration/class_ps_ai.php';
 
             new \PostSnippets\Admin();
             new \PostSnippets\WPEditor();
@@ -433,8 +435,20 @@ if ( !function_exists( 'postsnippets_fs' ) ) {
 
         }
 
+        public function enqueue_ai_chatbot_script() {
+            wp_register_script( 'chatbot-script', plugins_url( '/assets/chatbot-script.js', \PostSnippets::FILE ), array( 'jquery' ), PS_VERSION, true );
+            wp_localize_script(
+                'chatbot-script',
+                'PSchatbot',
+                array(
+                    'ajaxurl'   => admin_url( 'admin-ajax.php' ),
+                    'nonce' => wp_create_nonce('chatbot_nonce'),
+                    'settings_url' => admin_url( 'admin.php?page=post-snippets-chatbot' )
+                )
+            );
 
-
+            wp_enqueue_script( 'chatbot-script' );
+        }
 
     }
     add_action( 'plugins_loaded', array( 'PostSnippets', 'getInstance' ) );
