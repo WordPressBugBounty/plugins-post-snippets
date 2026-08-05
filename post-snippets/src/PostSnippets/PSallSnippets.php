@@ -720,7 +720,7 @@ if (class_exists('PostSnippets')) {
                     $snippet = $snippet[0];
                 }
 
-                $atts = $attributes["snippetVars"];
+                $atts = $attributes["snippetVars"] ?? [];
 
                 if (!empty($atts) || is_array($atts)) {     /**Removing Empty Arrays, so that they get default Vals(snippet_vars) */
                     foreach ($atts as $key => $att) {

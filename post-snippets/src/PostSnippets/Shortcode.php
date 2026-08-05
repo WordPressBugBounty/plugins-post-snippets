@@ -41,7 +41,7 @@ class Shortcode
 
             $texturize = $snippet["snippet_wptexturize"]?? false;
 
-            foreach ($atts as $key => $val) {
+            foreach ((array) $atts as $key => $val) {
                 if ( is_numeric($key) ) {
                     $attribute = explode('=', $val, 2);
                     

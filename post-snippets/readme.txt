@@ -4,7 +4,7 @@ Tags: custom snippet, custom shortcode, snippet, snippets, shortcode
 Requires at least: 5.3
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 4.2.1
+Stable tag: 4.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -114,6 +114,9 @@ your clients to be able to use PHP code in a post snippet.
 5. Easy to access inline documentation (top right 'Help' button in WordPress).
 
 == Changelog ==
+
+= Version 4.2.2 - 05 Aug 2026 =
+ * Bug fixed on snippet has no variables set.
 
 = Version 4.2.1 - 21 July 2026 =
  * Updated freemius SDK.
