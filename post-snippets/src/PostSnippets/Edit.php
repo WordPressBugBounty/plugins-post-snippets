@@ -876,9 +876,45 @@ class Edit {
                                 'description' => __( 'Enable WP_Texturize For This Snippet', 'post-snippets' )
                             )
                         );
+
+        add_settings_field( 'snippet_rawhtml',
+                            __('Render HTML:','post-snippets'),
+                            array( \PostSnippets::EDIT_CLASS, 'add_section_fields' ),
+                            'post-snippets-edit',
+                            'pspro_edit_snippet',
+                            array(
+                                'id'          => 'snippet_rawhtml',
+                                'label_for'   => 'pspro_snippet_rawhtml',
+                                'description' => __( 'Render snippet output as raw HTML instead of text', 'post-snippets' )
+                            )
+                        );
     }
 
     public static function add_section_fields( $arguments ) {
+
+        if ( $arguments['id'] == 'snippet_rawhtml' ) {
+            $is_checked = self::get_data( $arguments['id'] );
+
+            if ( ! self::$editSnippetPage && $is_checked === '' ) {
+                $is_checked = 1;
+            }
+
+            ?>
+
+                <input  type="checkbox"
+                        name="<?php echo esc_attr( $arguments['id'] )  ?>"
+                        id="pspro_<?php echo esc_attr( $arguments['id'] ) ?>"
+                        value = "1"
+                        <?php echo ( ($is_checked)?esc_attr( 'checked' ):'' ) ?>
+
+                />
+
+            <?php
+            echo '<label>';
+            esc_html_e( 'When enabled, snippet output can render HTML tags. Disable this to print HTML as visible text.', 'post-snippets' );
+            echo '</label>';
+            return;
+        }
 
         if($arguments['id'] == 'snippet_vars'){
 
@@ -1349,12 +1385,13 @@ class Edit {
                                                     'snippet_shortcode'     => ( ($_REQUEST['snippet_shortcode']?? 0 ) == 1) ? 1 : 0,
                                                     'snippet_php'           => $snippet_php,
                                                     'snippet_wptexturize'   => ( ($_REQUEST['snippet_wptexturize']?? 0 ) == 1) ? 1 : 0,
+                                                    'snippet_rawhtml'       => isset( $_REQUEST['snippet_rawhtml'] ) ? 1 : 0,
                                                 ),
                                                 array(                      /**Where Coulum = ? */
                                                     'ID'                    => self::$snippet_id,
                                                 ),
                                                 array(                      /**Data Format, %d or %s */
-                                                    '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%d'
+                                                    '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%d', '%d'
                                                 ),
                                                 array(                      /**Where Format, %d or %s */
                                                     '%d'
@@ -1408,6 +1445,7 @@ class Edit {
                                             'snippet_shortcode'     => ( ($_REQUEST['snippet_shortcode']?? 0 ) == 1) ?      1 : 0,
                                             'snippet_php'           => $snippet_php,
                                             'snippet_wptexturize'   => ( ($_REQUEST['snippet_wptexturize']?? 0 ) == 1) ?    1 : 0,
+                                            'snippet_rawhtml'       => isset( $_REQUEST['snippet_rawhtml'] ) ?              1 : 0,
                                         )
                     );
 
@@ -1653,6 +1691,7 @@ class Edit {
                     'snippet_shortcode'     => (($imported_snippet['snippet_shortcode']?? 0)    == 1) ? 1 : 0,
                     'snippet_php'           => $snippet_php,
                     'snippet_wptexturize'   => (($imported_snippet['snippet_wptexturize']?? 0)  == 1) ? 1 : 0,
+                    'snippet_rawhtml'       => (($imported_snippet['snippet_rawhtml'] ?? 1)     == 1) ? 1 : 0,
                 )
             );
 

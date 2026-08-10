@@ -759,6 +759,7 @@ if (class_exists('PostSnippets')) {
                         'shortcode' => $snippet['snippet_shortcode'],
                         'php' => $snippet['snippet_php'],
                         'wptexturize' => $snippet['snippet_wptexturize'],
+                        'rawhtml' => $snippet['snippet_rawhtml'] ?? 1,
                         'snippet' => $snippet['snippet_content'],
                         'ID' => $snippet['ID'],
                         'status' => $snippet['snippet_status'],
@@ -803,6 +804,7 @@ if (class_exists('PostSnippets')) {
                         $particular_snippet['shortcode'] = $particular_snippets['snippet_shortcode'];
                         $particular_snippet['php'] = $particular_snippets['snippet_php'];
                         $particular_snippet['wptexturize'] = $particular_snippets['snippet_wptexturize'];
+                        $particular_snippet['rawhtml'] = $particular_snippets['snippet_rawhtml'] ?? 1;
                         $particular_snippet['snippet'] = $particular_snippets['snippet_content'];
                         $particular_snippet['ID'] = $particular_snippets['ID'];
                         $particular_snippet['status'] = $particular_snippets['snippet_status'];
@@ -917,6 +919,7 @@ if (class_exists('PostSnippets')) {
                     'snippet_shortcode' => $request['shortcode'],
                     'snippet_php' => $request['php'],
                     'snippet_wptexturize' => $request['wptexturize'],
+                    'snippet_rawhtml' => $request['rawhtml'] ?? 1,
                 )
             );
 
@@ -972,6 +975,7 @@ if (class_exists('PostSnippets')) {
                     'snippet_shortcode' => $request['shortcode'] ?? 0,
                     'snippet_php' => $request['php'] ?? 0,
                     'snippet_wptexturize' => $request['wptexturize'] ?? 0,
+                    'snippet_rawhtml' => $request['rawhtml'] ?? 1,
                 ),
                 array(                      /**Where Coulum = ? */
                     'ID' => $snippet_found['ID'],
@@ -981,6 +985,7 @@ if (class_exists('PostSnippets')) {
                     '%s',
                     '%s',
                     '%s',
+                    '%d',
                     '%d',
                     '%d',
                     '%d'

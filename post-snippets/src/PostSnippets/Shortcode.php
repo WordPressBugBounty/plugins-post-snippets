@@ -38,8 +38,7 @@ class Shortcode
         if( !empty($snippet) ){
 
             $default_atts = self::filterVars( $snippet['snippet_vars'] );
-
-            $texturize = $snippet["snippet_wptexturize"]?? false;
+            $render_raw_html = self::shouldRenderRawHtml( $snippet );
 
             foreach ((array) $atts as $key => $val) {
                 if ( is_numeric($key) ) {
@@ -71,7 +70,8 @@ class Shortcode
             $snippet_content = self::replaceSnippetVariables(
                 $snippet_content,
                 $short_atts,
-                ! empty( $snippet['snippet_php'] ) && (int) $snippet['snippet_php'] === 1
+                ! empty( $snippet['snippet_php'] ) && (int) $snippet['snippet_php'] === 1,
+                $render_raw_html
             );
 
             // There might be the case that a snippet contains
@@ -93,9 +93,7 @@ class Shortcode
 
             } else {
                 if ( ! empty( $snippet['snippet_wptexturize'] ) && ( $snippet['snippet_wptexturize'] == true ) ) {
-                    $snippet_content = html_entity_decode ( addslashes ( wptexturize ( htmlentities( stripslashes ( $snippet_content ), ENT_NOQUOTES ) ) ) );
-                } else {
-                    $snippet_content =  html_entity_decode ( $snippet_content );
+                    $snippet_content = addslashes( wptexturize( stripslashes( $snippet_content ) ) );
                 }
             }            
             
@@ -128,10 +126,10 @@ class Shortcode
         return addslashes($content);
     }
 
-    public static function replaceSnippetVariables($snippet_content, $short_atts, $php_snippet = false)
+    public static function replaceSnippetVariables($snippet_content, $short_atts, $php_snippet = false, $render_raw_html = true)
     {
         foreach ( $short_atts as $key => $val ) {
-            $short_atts[ $key ] = self::sanitizeVariableValue( $key, $val, $php_snippet );
+            $short_atts[ $key ] = self::sanitizeVariableValue( $key, $val, $php_snippet, $render_raw_html );
         }
 
         if ( $php_snippet ) {
@@ -145,7 +143,7 @@ class Shortcode
         return $snippet_content;
     }
 
-    public static function sanitizeVariableValue($key, $val, $php_snippet = false)
+    public static function sanitizeVariableValue($key, $val, $php_snippet = false, $render_raw_html = true)
     {
         $val = (string) $val;
 
@@ -156,7 +154,7 @@ class Shortcode
 
             switch (strtolower($text[1])) {
                 case 'url':
-                    $val = esc_url_raw( $val );
+                    $val = esc_url( $val );
                     break;
                 case 'text':
                     $val = esc_html( $val );
@@ -177,13 +175,23 @@ class Shortcode
             return $val;
         }
 
-        return strtr(
-            $val,
-            array(
-                '"' => '&quot;',
-                "'" => '&apos;',
-            )
-        );
+        if ( $colon !== false ) {
+            return $val;
+        }
+
+        // Normalize entity-encoded HTML first, then either allow it through (raw mode) or escape it once (text mode)
+        $val = html_entity_decode( $val, ENT_QUOTES );
+
+        return $render_raw_html ? $val : esc_html( $val );
+    }
+
+    public static function shouldRenderRawHtml( $snippet )
+    {
+        if ( ! array_key_exists( 'snippet_rawhtml', $snippet ) ) {
+            return true;
+        }
+
+        return (int) $snippet['snippet_rawhtml'] === 1;
     }
 
     public static function replacePhpVariables($snippet_content, $short_atts)

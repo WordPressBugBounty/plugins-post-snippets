@@ -407,6 +407,7 @@ class ImportExport
                 'snippet_shortcode' => ($imported_snippet['snippet_shortcode'] ?? $imported_snippet['shortcode'] ?? 0) == 1 ? 1 : 0,
                 'snippet_php' => $snippet_php,
                 'snippet_wptexturize' => ($imported_snippet['snippet_wptexturize'] ?? $imported_snippet['wptexturize'] ?? 0) == 1 ? 1 : 0,
+                'snippet_rawhtml' => ($imported_snippet['snippet_rawhtml'] ?? $snippet_found['snippet_rawhtml'] ?? 1) == 1 ? 1 : 0,
             ),
             array(                      /**Where Coulum = ? */
                 'ID' => $snippet_found['ID'],
@@ -416,6 +417,7 @@ class ImportExport
                 '%s',
                 '%s',
                 '%s',
+                '%d',
                 '%s',
                 '%d',
                 '%d',

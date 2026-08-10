@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class DBTable{
 
-    public $psp_db_version = '1.0';
+    public $psp_db_version = '1.1';
 
     function __construct() {
 
@@ -37,6 +37,7 @@ class DBTable{
             snippet_shortcode smallint(11) unsigned NOT NULL,
             snippet_php smallint(11) unsigned NOT NULL,
             snippet_wptexturize smallint(11) unsigned NOT NULL,
+            snippet_rawhtml smallint(11) unsigned NOT NULL DEFAULT 1,
             PRIMARY KEY  (ID)
         ) $charset_collate;";
 
@@ -132,6 +133,7 @@ class DBTable{
                         'snippet_shortcode'     => ( ($snippet["shortcode"]      ?? 0 ) == 1 ) ? 1 : 0,
                         'snippet_php'           => $snippet_php,
                         'snippet_wptexturize'   => ( ($snippet["wptexturize"]    ?? 0 ) == 1 ) ? 1 : 0,
+                        'snippet_rawhtml'       => 1,
                     ) 
                 );
 

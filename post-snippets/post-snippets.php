@@ -11,7 +11,7 @@
  * Plugin Name: Post Snippets (free)
  * Plugin URI: https://www.postsnippets.com
  * Description: Create a library of reusable content and insert it into your posts and pages. Navigate to "Settings > Post Snippets" to get started.
- * Version: 4.2.2
+ * Version: 4.2.3
  * Author: Postsnippets
  * Author URI: https://www.postsnippets.com
  * License: GPL-2.0+
@@ -135,7 +135,7 @@ if ( !function_exists( 'postsnippets_fs' ) ) {
         define( 'PS_MAIN_FILE', basename( __FILE__ ) );
     }
     if ( !defined( 'PS_VERSION' ) ) {
-        define( 'PS_VERSION', '4.2.2' );
+        define( 'PS_VERSION', '4.2.3' );
     }
     if ( !defined( 'PS_MAIN_FILE_PATH' ) ) {
         define( 'PS_MAIN_FILE_PATH', __FILE__ );
@@ -423,14 +423,15 @@ if ( !function_exists( 'postsnippets_fs' ) ) {
          */
         public static function post_snippet_pro_update_check() {
 
-            $current_plugin_verion  = get_option( self::VERSION_KEY );
+            $current_plugin_verion = get_option( self::VERSION_KEY );
+            $current_db_version = get_option( 'psp_db_version' );
+            $target_db_version = ( new \PostSnippets\DBTable() )->psp_db_version;
 
-            if(!$current_plugin_verion){
+            if ( ! $current_plugin_verion || version_compare( $current_plugin_verion, PS_VERSION, '<' ) || version_compare( (string) $current_db_version, $target_db_version, '<' ) ) {
 
-                update_option( self::VERSION_KEY, PS_VERSION );
-
-                /**Create DB Table, if not already */
+                /**Create or update DB Table */
                 new \PostSnippets\DBTable();
+                update_option( self::VERSION_KEY, PS_VERSION );
             }
 
         }
