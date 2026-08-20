@@ -252,18 +252,31 @@ class Shortcode
      */
     public static function filterVars($vars = '')
     {
-        if( !empty($vars) ){
+        if ( empty($vars) ) {
+            return array();
+        }
 
-            $vars = explode(",", $vars );
+        if ( is_string($vars) ) {
+            $vars = explode(",", $vars);
+        }
 
+        if ( is_array($vars) ) {
             $default_atts = array();
-            
-            foreach ($vars as $var) {
+
+            foreach ($vars as $key => $var) {
+                if ( !is_numeric($key) ) {
+                    $default_atts[$key] = is_scalar($var) ? (string)$var : '';
+                    continue;
+                }
+
+                if ( !is_string($var) ) {
+                    continue;
+                }
 
                 $attribute = explode('=', $var);        /**This Results in array seperated by = sign */
 
-                foreach ($attribute as $key => $value) {    //Filtering Empty Values generated with such variable texts one,two=,,,=xx=one,,==two
-                    if( empty($value) ) unset($attribute[$key]);
+                foreach ($attribute as $attr_key => $value) {    //Filtering Empty Values generated with such variable texts one,two=,,,=xx=one,,==two
+                    if( empty($value) ) unset($attribute[$attr_key]);
                 }
 
                 if( empty($attribute) ) continue;   /**After Unsetting Empty values above, any empty array still remains, so this line is skipping that */
@@ -271,15 +284,13 @@ class Shortcode
                 $attribute = array_values($attribute);      //resetting index to start with zero
 
                 $default_value = (count($attribute) > 1) ? $attribute[1] : '';      /**Default values of vars, if set any */
-                
+
                 $default_atts[$attribute[0]] = $default_value;      /**Setting Default Atts for shortcode_atts  */
-                
             }
 
             return $default_atts;
         }
-        else{
-            return array();
-        }
+
+        return array();
     }
 }

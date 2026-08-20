@@ -69,8 +69,9 @@ if (class_exists('PostSnippets')) {
         function get_bulk_actions()
         {   //Bulk Action Dropdown
             $actions = array(
-                'enable' => 'Enable',
-                'disable' => 'Disable'
+                'enable' => esc_attr__('Enable', 'post-snippets'),
+                'disable' => esc_attr__('Disable', 'post-snippets'),
+                'delete' => esc_attr__('Delete', 'post-snippets'),
             );
             return $actions;
         }
@@ -115,13 +116,8 @@ if (class_exists('PostSnippets')) {
                         <option value="0" <?php echo esc_attr((0 == ($_REQUEST['status'] ?? '')) ? " selected" : ''); ?>>
                             <?php esc_html_e('Inactive', 'post-snippets') ?></option>
                     </select>
-                    <input type="submit" name="status_filter_action" id="doaction" class="button action"
+                    <input type="submit" name="status_filter_action" id="post-query-submit" class="button action"
                         value="<?php esc_html_e('Filter', 'post-snippets') ?>">
-
-                </div>
-
-
-
 
                 </div>
 
@@ -408,24 +404,28 @@ if (class_exists('PostSnippets')) {
 
             }
 
-            foreach ($snippet_ids as $key => $snippet_id) {
+            $success = true;
 
+            foreach ($snippet_ids as $key => $snippet_id) {
+                $snippet_id = intval($snippet_id);
                 $snippet_status = $wpdb->get_var($wpdb->prepare("SELECT snippet_status FROM $table_name WHERE ID = %d", $snippet_id));       /**Getting It's Status */
 
                 if ($action == 1 && $snippet_status != 1) {    /**If its Already Active, Skip */
 
-                    $status_updated = $this->update_snippet_status($snippet_id, $action, $table_name, $wpdb);
+                    $res = $this->update_snippet_status($snippet_id, $action, $table_name, $wpdb);
+                    if ($res === false) {
+                        $success = false;
+                    }
                 } elseif ($action == 0 && $snippet_status != 0) {    /**If its Already InActive, Skip */
 
-                    $status_updated = $this->update_snippet_status($snippet_id, $action, $table_name, $wpdb);
-                } else {
-                    $status_updated = true;
+                    $res = $this->update_snippet_status($snippet_id, $action, $table_name, $wpdb);
+                    if ($res === false) {
+                        $success = false;
+                    }
                 }
             }
 
-            if ($status_updated) {
-                return true;
-            }
+            return $success;
         }
 
 
@@ -540,6 +540,21 @@ if (class_exists('PostSnippets')) {
 
                     if ($this->change_snippet_status($_REQUEST['snippets'], 0)) {
                         printf('<div class="notice notice-success is-dismissible"><p>%s..</p></div>', esc_html__('Snippets Deactivated', 'post-snippets'));
+                    } else {
+                        printf('<div class="notice notice-error is-dismissible"><p>%s..</p></div>', esc_html__('There has been an Error', 'post-snippets'));
+                    }
+
+                } elseif ($action == 'delete') {
+
+                    $has_error = false;
+                    foreach ($_REQUEST['snippets'] as $snippet_id) {
+                        if (!$this->delete_snippet(intval($snippet_id))) {
+                            $has_error = true;
+                        }
+                    }
+
+                    if (!$has_error) {
+                        printf('<div class="notice notice-success is-dismissible"><p>%s..</p></div>', esc_html__('Snippets Deleted', 'post-snippets'));
                     } else {
                         printf('<div class="notice notice-error is-dismissible"><p>%s..</p></div>', esc_html__('There has been an Error', 'post-snippets'));
                     }
